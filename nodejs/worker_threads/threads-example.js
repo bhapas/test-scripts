@@ -15,6 +15,7 @@ if (isMainThread) {
     console.log(err);
   });
   worker.on('exit', () => {
+    console.log("Main Thread end: ", process.memoryUsage());
     console.log('Worker exited');
   });
 } else {
@@ -23,15 +24,16 @@ if (isMainThread) {
   const heapSizeBefore = getHeapStatistics().total_heap_size;
   console.log(`In the worker thread, heap size is ${heapSizeBefore}`);
 
-  parentPort.postMessage(`Array size ${bigArray.length}`);
+//   parentPort.postMessage(`Array size ${bigArray.length}`);
 
-  // Eat a lot of memory
-  for (let i = 0; i < 100000000; i++) {
-    bigArray.push(i);
-  }
+//   // Eat a lot of memory
+//   for (let i = 0; i < 100000000; i++) {
+//     bigArray.push(i);
+//   }
 
-  const heapSizeAfter = getHeapStatistics().total_heap_size;
-  console.log(`In the worker thread, heap size is ${heapSizeAfter}`);
-  parentPort.postMessage(`Array size ${bigArray.length}`);
+//   const heapSizeAfter = getHeapStatistics().total_heap_size;
+//   console.log(`In the worker thread, heap size is ${heapSizeAfter}`);
+//   parentPort.postMessage(`Array size ${bigArray.length}`);
+  console.log("Worker Thread end: ", process.memoryUsage());
   parentPort.unref();
 }
